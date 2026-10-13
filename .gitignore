@@ -59,3 +59,9 @@ companion/macos/Flutter/GeneratedPluginRegistrant.swift
 
 # personal Claude project rules (not shared)
 CLAUDE.local.md
+
+# Standalone head-unit Android app
+headunit/.gradle/
+headunit/**/build/
+headunit/local.properties
+headunit/receiver/.pio/

@@ -268,3 +268,7 @@ Each engine also exists as a standalone firmware:
 ## Disclaimer
 
 Security-research and privacy-auditing tool. Detecting surveillance hardware in public spaces is legal in most jurisdictions. Comply with local laws on wireless scanning and signal interception. GATT exploitation actions carry risk. Lawful use only — authors not responsible for misuse.
+
+## Android car-radio edition
+
+[Persephone RF](headunit/README.md) is a separate native Android training app with a cyberpunk phone/head-unit HUD, built-in Wi-Fi/BLE discovery, priority Flock/Raven/Falcon-LPR candidate tagging, GPS receiver-map overlays, tentative RSSI search areas, SD-folder JSONL/CSV/GeoJSON exports, offline demo/replay, and passcode-approved read-only BLE inventory. A bundled passive ESP32-S3 USB receiver adds wildcard/ordered-IE probe evidence. Nothing Phone and HiBy R4 installation/launch are verified; live radio/pager hardware qualification remains required. See the guide for evidence limits and acceptance checks.

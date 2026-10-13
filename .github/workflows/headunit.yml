@@ -1,0 +1,52 @@
+name: Persephone head-unit checks
+on:
+  push:
+    paths: ['headunit/**', '.github/workflows/headunit.yml']
+  pull_request:
+    paths: ['headunit/**', '.github/workflows/headunit.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  android-and-passive-receiver:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: gradle/actions/setup-gradle@v4
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
+          cmdline-tools-version: "11076708"
+      - name: Android platform
+        run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
+      - name: Host policy and parser checks
+        run: |
+          headunit/test-core.sh
+          headunit/test-firmware.sh
+      - name: Android tests, lint, and APK
+        working-directory: headunit
+        run: ./gradlew testDebugUnitTest lintDebug assembleDebug
+      - name: Compile both receive-only ESP32-S3 targets
+        run: |
+          python -m pip install platformio==6.1.18
+          pio run -d headunit/receiver
+      - uses: actions/upload-artifact@v4
+        with:
+          name: persephone-training-preview
+          path: |
+            headunit/app/build/outputs/apk/debug/*.apk
+            headunit/app/build/previews/*.png
+            headunit/app/build/reports/tests/testDebugUnitTest/**
+            headunit/receiver/.pio/build/passive_xiao_s3/firmware.bin
+            headunit/receiver/.pio/build/passive_xiao_s3/bootloader.bin
+            headunit/receiver/.pio/build/passive_xiao_s3/partitions.bin
+            headunit/receiver/.pio/build/passive_s3_devkit/firmware.bin
+            headunit/receiver/.pio/build/passive_s3_devkit/bootloader.bin
+            headunit/receiver/.pio/build/passive_s3_devkit/partitions.bin
